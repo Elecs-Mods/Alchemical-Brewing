@@ -2,14 +2,12 @@ package elec332.alchemicalbrewing;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import elec332.alchemicalbrewing.init.BlockRegister;
 import elec332.alchemicalbrewing.init.CommandRegister;
 import elec332.alchemicalbrewing.init.ItemRegister;
+import elec332.alchemicalbrewing.potion.SortingHandler;
 import elec332.alchemicalbrewing.reflection.Reflection;
 import elec332.core.config.ConfigWrapper;
 import elec332.core.helper.FileHelper;
@@ -19,6 +17,8 @@ import elec332.alchemicalbrewing.proxies.CommonProxy;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+
 /**
  * Created by Elec332 on 24-2-2015.
  */
@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 public class AlchemicalBrewing {
 
     public static final String ModName = "Alchemical Brewing";
-    public static final String ModID = "alchemicalbrewing";
+    public static final String ModID = "AlchemicalBrewing";
 
     @SidedProxy(clientSide = "elec332.alchemicalbrewing.proxies.ClientProxy", serverSide = "elec332.alchemicalbrewing.proxies.CommonProxy")
     public static CommonProxy proxy;
@@ -37,12 +37,14 @@ public class AlchemicalBrewing {
     public static Configuration config;
     public static ConfigWrapper configWrapper;
     public static Logger logger;
+    public static File configFolder;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         config = new Configuration(FileHelper.getConfigFileElec(event));
         configWrapper = new ConfigWrapper(config);
         config.load();
+        configFolder = FileHelper.getElecConfigFolder(event);
         logger = event.getModLog();
         Reflection.transform();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
@@ -69,6 +71,11 @@ public class AlchemicalBrewing {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event){
         //NOPE
+    }
+
+    @Mod.EventHandler
+    public void loadComplete(FMLLoadCompleteEvent event){
+        SortingHandler.checkForConflicts();
     }
 
     @Mod.EventHandler

@@ -1,6 +1,7 @@
 package elec332.alchemicalbrewing.reflection;
 
 import elec332.alchemicalbrewing.AlchemicalBrewing;
+import elec332.alchemicalbrewing.util.Config;
 import elec332.core.java.ReflectionHelper;
 import elec332.core.main.ElecCore;
 import net.minecraft.potion.Potion;
@@ -25,14 +26,14 @@ public class Reflection {
         }
         try {
             if (potion != null) {
-                Potion[] toReplace = new Potion[Byte.MAX_VALUE+1];
+                Potion[] toReplace = new Potion[Config.maxPotionID+1];
                 System.arraycopy(Potion.potionTypes, 0, toReplace, 0, Potion.potionTypes.length);
                 potion.set(null, toReplace);
             }
         } catch (IllegalAccessException e){
             AlchemicalBrewing.logger.error("Error transforming potion field, unable to extend potion ID's");
         }
-        AlchemicalBrewing.logger.info("Successfully extended potion ID range to: " + Byte.MAX_VALUE);
+        AlchemicalBrewing.logger.info("Successfully extended potion ID range to: " + Config.maxPotionID);
     }
 
     private static boolean init = false;

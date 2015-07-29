@@ -1,8 +1,7 @@
-*.db
+.gradle/*
+eclipse/*
+out/*
 *.iml
 *.iws
 *.ipr
-.gradle/*
-eclipse/*
-eclipse/logs/*
-out/*
+*.db
