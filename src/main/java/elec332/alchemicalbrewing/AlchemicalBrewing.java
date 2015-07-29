@@ -10,14 +10,14 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import elec332.alchemicalbrewing.init.BlockRegister;
 import elec332.alchemicalbrewing.init.CommandRegister;
 import elec332.alchemicalbrewing.init.ItemRegister;
+import elec332.alchemicalbrewing.reflection.Reflection;
 import elec332.core.config.ConfigWrapper;
 import elec332.core.helper.FileHelper;
 import elec332.core.helper.MCModInfo;
 import elec332.core.modBaseUtils.ModInfo;
 import elec332.alchemicalbrewing.proxies.CommonProxy;
 import net.minecraftforge.common.config.Configuration;
-
-import java.io.File;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Created by Elec332 on 24-2-2015.
@@ -36,12 +36,15 @@ public class AlchemicalBrewing {
     public static AlchemicalBrewing instance;
     public static Configuration config;
     public static ConfigWrapper configWrapper;
+    public static Logger logger;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         config = new Configuration(FileHelper.getConfigFileElec(event));
         configWrapper = new ConfigWrapper(config);
         config.load();
+        logger = event.getModLog();
+        Reflection.transform();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
         ItemRegister.instance.preInit(event);
         BlockRegister.instance.preInit(event);
