@@ -1,7 +1,7 @@
 package elec332.alchemicalbrewing.asm;
 
 import elec332.alchemicalbrewing.AlchemicalBrewing;
-import elec332.alchemicalbrewing.reflection.Reflection;
+import elec332.alchemicalbrewing.util.PotionArrayExpansion;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -15,7 +15,7 @@ import static org.objectweb.asm.Opcodes.*;
 public class ClassTransformer implements IClassTransformer {
 
 	public ClassTransformer(){
-		Reflection.transform();
+		PotionArrayExpansion.transform();
 	}
 
 	@Override

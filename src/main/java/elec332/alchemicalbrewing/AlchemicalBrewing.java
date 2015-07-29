@@ -7,14 +7,23 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import elec332.alchemicalbrewing.init.BlockRegister;
 import elec332.alchemicalbrewing.init.CommandRegister;
 import elec332.alchemicalbrewing.init.ItemRegister;
+import elec332.alchemicalbrewing.multiblock.MultiBlocks;
 import elec332.alchemicalbrewing.potion.SortingHandler;
-import elec332.alchemicalbrewing.reflection.Reflection;
+import elec332.alchemicalbrewing.util.Config;
 import elec332.core.config.ConfigWrapper;
 import elec332.core.helper.FileHelper;
 import elec332.core.helper.MCModInfo;
 import elec332.core.modBaseUtils.ModInfo;
 import elec332.alchemicalbrewing.proxies.CommonProxy;
+import elec332.core.multiblock.MultiBlockRegistry;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
@@ -38,6 +47,8 @@ public class AlchemicalBrewing {
     public static ConfigWrapper configWrapper;
     public static Logger logger;
     public static File configFolder;
+    public static CreativeTabs creativeTab;
+    public static MultiBlockRegistry multiBlockRegistry;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -46,24 +57,33 @@ public class AlchemicalBrewing {
         config.load();
         configFolder = FileHelper.getElecConfigFolder(event);
         logger = event.getModLog();
-        Reflection.transform();
+        configWrapper.registerConfig(new Config());
+        creativeTab = new CreativeTabs(ModID) {
+            @Override
+            public Item getTabIconItem() {
+                return Items.potionitem;
+            }
+        };
+        multiBlockRegistry = new MultiBlockRegistry();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
-        ItemRegister.instance.preInit(event);
-        BlockRegister.instance.preInit(event);
         //setting up mod stuff
+        logger.info("Glass bottle capacity: " + FluidContainerRegistry.getContainerCapacity(new FluidStack(FluidRegistry.WATER, 987), new ItemStack(Items.glass_bottle)));
+        logger.info("Glass bottle capacity: "+FluidContainerRegistry.getContainerCapacity(new ItemStack(Items.potionitem)));
 
 
         MCModInfo.CreateMCModInfo(event, "Created by Elec332",
                 "A complete brewing overhaul!",
                 "website link", "logo",
                 new String[]{"Elec332"});
+        config.save();
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         config.load();
-        ItemRegister.instance.init(event);
-        BlockRegister.instance.init(event);
+        ItemRegister.instance.init();
+        BlockRegister.instance.init();
+        MultiBlocks.registerMultiBlocks();
         //register items/blocks
 
     }

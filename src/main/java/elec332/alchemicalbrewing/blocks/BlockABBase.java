@@ -10,5 +10,6 @@ import net.minecraft.block.material.Material;
 public class BlockABBase extends BlockTileBase {
     public BlockABBase(Material mat, Class tileClass, String blockName) {
         super(mat, tileClass, blockName, AlchemicalBrewing.ModID);
+        setCreativeTab(AlchemicalBrewing.creativeTab);
     }
 }
