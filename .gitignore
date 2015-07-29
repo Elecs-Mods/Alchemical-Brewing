@@ -3,3 +3,6 @@
 *.iws
 *.ipr
 .gradle/*
+eclipse/*
+eclipse/logs/*
+out/*
