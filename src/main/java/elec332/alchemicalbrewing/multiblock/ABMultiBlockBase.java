@@ -2,7 +2,6 @@ package elec332.alchemicalbrewing.multiblock;
 
 import elec332.alchemicalbrewing.AlchemicalBrewing;
 import elec332.core.baseclasses.tileentity.IInventoryTile;
-import elec332.core.inventory.BaseContainer;
 import elec332.core.multiblock.AbstractMultiBlock;
 import elec332.core.multiblock.AbstractMultiBlockTile;
 import elec332.core.world.WorldHelper;
@@ -17,8 +16,9 @@ import net.minecraftforge.fluids.FluidTank;
  */
 public abstract class ABMultiBlockBase extends AbstractMultiBlock implements IInventoryTile{
 
-    public ABMultiBlockBase(FluidTank tank){
-        super();
+    public final void setInternalTank(FluidTank tank){
+        if (internalTank != null)
+            throw new IllegalStateException("Cannot reassign tank!");
         this.internalTank = tank;
     }
 

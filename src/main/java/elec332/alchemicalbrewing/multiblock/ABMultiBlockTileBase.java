@@ -31,7 +31,6 @@ public class ABMultiBlockTileBase extends AbstractMultiBlockTile implements IInv
             if (FluidContainerRegistry.isContainer(stack) && getMultiBlock() != null) {
                 FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(stack);
                 if (liquid != null) {
-                    PlayerHelper.sendMessageToPlayer(player, "Filling...");
                     int i = ((IFluidHandler) this).fill(ForgeDirection.getOrientation(side), liquid, true);
                     if (i != 0 && !PlayerHelper.isPlayerInCreative(player)) {
                         if (stack.stackSize > 1) {
