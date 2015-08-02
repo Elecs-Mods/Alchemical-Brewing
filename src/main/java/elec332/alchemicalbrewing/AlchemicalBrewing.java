@@ -4,11 +4,14 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import elec332.alchemicalbrewing.init.BlockRegister;
 import elec332.alchemicalbrewing.init.CommandRegister;
 import elec332.alchemicalbrewing.init.ItemRegister;
 import elec332.alchemicalbrewing.multiblock.MultiBlocks;
 import elec332.alchemicalbrewing.potion.SortingHandler;
+import elec332.alchemicalbrewing.registry.PotionRegistry;
 import elec332.alchemicalbrewing.util.Config;
 import elec332.core.config.ConfigWrapper;
 import elec332.core.helper.FileHelper;
@@ -20,6 +23,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -66,6 +70,7 @@ public class AlchemicalBrewing {
         };
         multiBlockRegistry = new MultiBlockRegistry();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+        PotionRegistry.instance.preInitFluids();
         //setting up mod stuff
         logger.info("Glass bottle capacity: " + FluidContainerRegistry.getContainerCapacity(new FluidStack(FluidRegistry.WATER, 987), new ItemStack(Items.glass_bottle)));
         logger.info("Glass bottle capacity: "+FluidContainerRegistry.getContainerCapacity(new ItemStack(Items.potionitem)));
@@ -90,7 +95,7 @@ public class AlchemicalBrewing {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event){
-        //NOPE
+
     }
 
     @Mod.EventHandler

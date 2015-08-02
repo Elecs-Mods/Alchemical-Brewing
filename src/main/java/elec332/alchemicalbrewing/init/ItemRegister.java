@@ -2,7 +2,6 @@ package elec332.alchemicalbrewing.init;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import elec332.alchemicalbrewing.AlchemicalBrewing;
-import elec332.alchemicalbrewing.multiblock.ABMultiBlockBase;
 import elec332.alchemicalbrewing.tile.TileChemicalTank;
 import elec332.core.player.PlayerHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,13 +25,15 @@ public class ItemRegister {
         @Override
         public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
             try {
-                if (world.getTileEntity(x, y, z) instanceof TileChemicalTank && !world.isRemote) {
+                if (world.getTileEntity(x, y, z) instanceof TileChemicalTank && world.isRemote) {
                     TileChemicalTank tank = (TileChemicalTank) world.getTileEntity(x, y, z);
-                    PlayerHelper.sendMessageToPlayer(player, "Fluid: " + tank.getTankInfo(null)[0].fluid + "  amount: " + ((ABMultiBlockBase) tank.getMultiBlock()).getInternalTank().getFluid().amount);
+                    PlayerHelper.sendMessageToPlayer(player, "Valid multiblock: "+tank.isValidMultiBlock());
+                    PlayerHelper.sendMessageToPlayer(player, "Has multiblock: "+(tank.getMultiBlock() != null));
+                    PlayerHelper.sendMessageToPlayer(player, "Fluid: " + tank.getMultiBlock().getInternalTank().getFluid().getFluid().getName() + "  amount: " + tank.getMultiBlock().getInternalTank().getFluid().amount);
                 }
             } catch (Exception e){
-                PlayerHelper.sendMessageToPlayer(player, "Wrong item");
-                e.printStackTrace();
+                //PlayerHelper.sendMessageToPlayer(player, "Wrong item");
+                //e.printStackTrace();
             }
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         }
