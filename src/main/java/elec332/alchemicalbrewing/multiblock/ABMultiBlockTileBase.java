@@ -2,7 +2,6 @@ package elec332.alchemicalbrewing.multiblock;
 
 import elec332.alchemicalbrewing.AlchemicalBrewing;
 import elec332.core.baseclasses.tileentity.IInventoryTile;
-import elec332.core.inventory.BaseContainer;
 import elec332.core.main.ElecCore;
 import elec332.core.multiblock.AbstractMultiBlockTile;
 import elec332.core.player.PlayerHelper;

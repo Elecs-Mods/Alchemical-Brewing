@@ -7,7 +7,7 @@ import elec332.core.inventory.tooltip.ToolTip;
 import elec332.core.inventory.widget.FluidTankWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 

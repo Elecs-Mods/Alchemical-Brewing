@@ -19,8 +19,10 @@ public final class MultiBlocks {
                 return new BlockStructure(3, 3, 3, new BlockStructure.IStructureFiller() {
                     @Override
                     public BlockData getBlockAtPos(int length, int width, int height) {
-                        //if (length == 1 && height == 1 && width == 1)
-                         //   return null;
+                        if (length == 1 && height == 1 && width == 1)
+                            return null;
+                        if (length == 1 && height == 0 && width == 0)
+                            return new BlockData(BlockRegister.tankTap, OreDictionary.WILDCARD_VALUE);
                         return new BlockData(BlockRegister.mundaneTankBlock, OreDictionary.WILDCARD_VALUE);
                     }
                 });

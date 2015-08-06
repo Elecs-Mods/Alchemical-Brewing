@@ -7,7 +7,10 @@ import elec332.core.baseclasses.tileentity.TileBase;
 import elec332.core.util.BasicInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 
 /**
  * Created by Elec332 on 29-7-2015.
@@ -71,19 +74,9 @@ public class MundaneTank extends ABMultiBlockBase{
     }
 
     public final float getPurity(){
-        if (getInternalTank().getFluid() != null)
+        if (getInternalTank().getFluid() != null && getInternalTank().getFluid().amount != 0)
             return getInternalTank().getFluid().tag.getFloat("purity");
         return 0;
-    }
-
-    public int fill(FluidStack resource, boolean doFill){
-        /*if (resource.getFluid() != FluidRegistry.WATER)
-            return 0;
-        FluidStack toAdd = new FluidStack(PotionRegistry.awkwardFluid, resource.amount);
-        if (getInternalTank().getFluid() == null)
-            toAdd.tag = new NBTTagCompound();*/
-        markDirty();
-        return getInternalTank().fill(resource, doFill);
     }
 
     @Override

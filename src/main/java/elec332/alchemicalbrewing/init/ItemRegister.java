@@ -2,7 +2,7 @@ package elec332.alchemicalbrewing.init;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import elec332.alchemicalbrewing.AlchemicalBrewing;
-import elec332.alchemicalbrewing.tile.TileChemicalTank;
+import elec332.alchemicalbrewing.tile.TileMundaneTankPart;
 import elec332.core.player.PlayerHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -25,8 +25,8 @@ public class ItemRegister {
         @Override
         public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
             try {
-                if (world.getTileEntity(x, y, z) instanceof TileChemicalTank && world.isRemote) {
-                    TileChemicalTank tank = (TileChemicalTank) world.getTileEntity(x, y, z);
+                if (world.getTileEntity(x, y, z) instanceof TileMundaneTankPart && world.isRemote) {
+                    TileMundaneTankPart tank = (TileMundaneTankPart) world.getTileEntity(x, y, z);
                     PlayerHelper.sendMessageToPlayer(player, "Valid multiblock: "+tank.isValidMultiBlock());
                     PlayerHelper.sendMessageToPlayer(player, "Has multiblock: "+(tank.getMultiBlock() != null));
                     PlayerHelper.sendMessageToPlayer(player, "Fluid: " + tank.getMultiBlock().getInternalTank().getFluid().getFluid().getName() + "  amount: " + tank.getMultiBlock().getInternalTank().getFluid().amount);

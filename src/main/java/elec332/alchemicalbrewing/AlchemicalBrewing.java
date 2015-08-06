@@ -4,26 +4,24 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import elec332.alchemicalbrewing.init.BlockRegister;
 import elec332.alchemicalbrewing.init.CommandRegister;
 import elec332.alchemicalbrewing.init.ItemRegister;
 import elec332.alchemicalbrewing.multiblock.MultiBlocks;
 import elec332.alchemicalbrewing.potion.SortingHandler;
+import elec332.alchemicalbrewing.proxies.CommonProxy;
 import elec332.alchemicalbrewing.registry.PotionRegistry;
 import elec332.alchemicalbrewing.util.Config;
 import elec332.core.config.ConfigWrapper;
 import elec332.core.helper.FileHelper;
 import elec332.core.helper.MCModInfo;
 import elec332.core.modBaseUtils.ModInfo;
-import elec332.alchemicalbrewing.proxies.CommonProxy;
+import elec332.core.multiblock.BlockData;
 import elec332.core.multiblock.MultiBlockRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -38,6 +36,10 @@ import java.io.File;
 @Mod(modid = AlchemicalBrewing.ModID, name = AlchemicalBrewing.ModName, dependencies = ModInfo.DEPENDENCIES+"@[#ELECCORE_VER#,)",
         acceptedMinecraftVersions = ModInfo.ACCEPTEDMCVERSIONS, useMetadata = true, canBeDeactivated = true)
 public class AlchemicalBrewing {
+
+    public AlchemicalBrewing(){
+        System.out.println(new BlockData(null).equals(new BlockData(null)));
+    }
 
     public static final String ModName = "Alchemical Brewing";
     public static final String ModID = "AlchemicalBrewing";
@@ -89,6 +91,7 @@ public class AlchemicalBrewing {
         ItemRegister.instance.init();
         BlockRegister.instance.init();
         MultiBlocks.registerMultiBlocks();
+        PotionRegistry.instance.init();
         //register items/blocks
 
     }

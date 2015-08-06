@@ -1,7 +1,7 @@
 package elec332.alchemicalbrewing.asm;
 
-import elec332.alchemicalbrewing.AlchemicalBrewing;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import elec332.alchemicalbrewing.AlchemicalBrewing;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.Map;

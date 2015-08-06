@@ -2,7 +2,6 @@ package elec332.alchemicalbrewing.util;
 
 import elec332.alchemicalbrewing.AlchemicalBrewing;
 import elec332.alchemicalbrewing.registry.ABPotion;
-import elec332.alchemicalbrewing.util.Config;
 import elec332.core.java.ReflectionHelper;
 import elec332.core.main.ElecCore;
 import net.minecraft.potion.Potion;
