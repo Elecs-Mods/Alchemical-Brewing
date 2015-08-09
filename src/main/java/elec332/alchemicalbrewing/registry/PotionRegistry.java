@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.fluids.Fluid;
@@ -22,10 +23,11 @@ public final class PotionRegistry {
     public static final PotionRegistry instance = new PotionRegistry();
     private PotionRegistry(){
         this.registry = Maps.newHashMap();
+        this.potionToStack = Maps.newHashMap();
     }
 
     private Map<Fluid, ItemStack> registry;
-
+    public Map<WrappedPotion, ItemStack> potionToStack;
 
     public static final Fluid awkwardFluid = new Fluid("awkwardFluid");
 
@@ -54,6 +56,7 @@ public final class PotionRegistry {
 
     public void init(){
         registry.put(awkwardFluid, awkwardPotion);
+        potionToStack.put(new WrappedPotion(Potion.heal, 1), new ItemStack(Items.potionitem, 1, 8197));
     }
 
     @SideOnly(Side.CLIENT)

@@ -38,6 +38,28 @@ public final class MultiBlocks {
                 return new BlockData(BlockRegister.mundaneTankBlock, OreDictionary.WILDCARD_VALUE);
             }
         }, "MundaneTank", MundaneTank.class);
+
+        AlchemicalBrewing.multiBlockRegistry.registerMultiBlock(new IMultiBlockStructure() {
+            @Override
+            public BlockStructure getStructure() {
+                return new BlockStructure(4, 3, 3, new BlockStructure.IStructureFiller() {
+                    @Override
+                    public BlockData getBlockAtPos(int length, int width, int height) {
+                        return new BlockData(BlockRegister.breweryBlock, OreDictionary.WILDCARD_VALUE);
+                    }
+                });
+            }
+
+            @Override
+            public BlockStructure.IStructureFiller replaceUponCreated() {
+                return null;
+            }
+
+            @Override
+            public BlockData getTriggerBlock() {
+                return new BlockData(BlockRegister.breweryBlock, OreDictionary.WILDCARD_VALUE);
+            }
+        }, "Brewery", Brewery.class);
     }
 
 }
