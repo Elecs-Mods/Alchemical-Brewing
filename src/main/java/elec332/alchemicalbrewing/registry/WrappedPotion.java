@@ -7,13 +7,15 @@ import net.minecraft.potion.Potion;
  */
 public final class WrappedPotion {
 
-    public WrappedPotion(Potion potion, int strength){
+    public WrappedPotion(Potion potion, int strength, boolean splash){
         this.potion = potion;
         this.strength = strength;
+        this.splash = splash;
     }
 
     private final Potion potion;
     private final int strength;
+    private final boolean splash;
 
     public Potion getPotion() {
         return potion;
@@ -23,6 +25,10 @@ public final class WrappedPotion {
         return strength;
     }
 
+    public boolean isSplash() {
+        return splash;
+    }
+
     @Override
     public int hashCode() {
         return strength;
@@ -30,6 +36,6 @@ public final class WrappedPotion {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof WrappedPotion && ((WrappedPotion) obj).potion == potion && obj.hashCode() == hashCode();
+        return obj instanceof WrappedPotion && ((WrappedPotion) obj).potion == potion && ((WrappedPotion) obj).splash == splash && obj.hashCode() == hashCode();
     }
 }

@@ -1,4 +1,4 @@
-package elec332.alchemicalbrewing.potion;
+package elec332.alchemicalbrewing.util;
 
 import elec332.alchemicalbrewing.AlchemicalBrewing;
 import elec332.alchemicalbrewing.asm.MethodHolder;

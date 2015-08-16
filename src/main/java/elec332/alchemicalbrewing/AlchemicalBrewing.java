@@ -8,7 +8,7 @@ import elec332.alchemicalbrewing.init.BlockRegister;
 import elec332.alchemicalbrewing.init.CommandRegister;
 import elec332.alchemicalbrewing.init.ItemRegister;
 import elec332.alchemicalbrewing.multiblock.MultiBlocks;
-import elec332.alchemicalbrewing.potion.SortingHandler;
+import elec332.alchemicalbrewing.util.SortingHandler;
 import elec332.alchemicalbrewing.proxies.CommonProxy;
 import elec332.alchemicalbrewing.registry.PotionRegistry;
 import elec332.alchemicalbrewing.util.Config;
