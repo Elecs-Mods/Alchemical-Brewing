@@ -5,6 +5,7 @@ import elec332.alchemicalbrewing.init.BlockRegister;
 import elec332.core.multiblock.BlockData;
 import elec332.core.multiblock.BlockStructure;
 import elec332.core.multiblock.IMultiBlockStructure;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
@@ -45,6 +46,8 @@ public final class MultiBlocks {
                 return new BlockStructure(4, 3, 3, new BlockStructure.IStructureFiller() {
                     @Override
                     public BlockData getBlockAtPos(int length, int width, int height) {
+                        if ((length == 1 || length == 2) && width == 1 && height == 1)
+                            return new BlockData(Blocks.brewing_stand);
                         return new BlockData(BlockRegister.breweryBlock, OreDictionary.WILDCARD_VALUE);
                     }
                 });

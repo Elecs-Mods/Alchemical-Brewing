@@ -7,7 +7,7 @@ import elec332.core.config.Configurable;
  */
 public class Config {
 
-    @Configurable(minValue = 24, maxValue = Short.MAX_VALUE)
+    @Configurable(minValue = 32, maxValue = Short.MAX_VALUE)
     public static int maxPotionID = 2048;
 
 }

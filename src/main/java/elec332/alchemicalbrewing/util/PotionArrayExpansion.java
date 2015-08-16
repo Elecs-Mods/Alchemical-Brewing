@@ -1,7 +1,6 @@
 package elec332.alchemicalbrewing.util;
 
 import elec332.alchemicalbrewing.AlchemicalBrewing;
-import elec332.alchemicalbrewing.registry.ABPotion;
 import elec332.core.java.ReflectionHelper;
 import elec332.core.main.ElecCore;
 import net.minecraft.potion.Potion;
@@ -33,12 +32,7 @@ public class PotionArrayExpansion {
         } catch (IllegalAccessException e){
             AlchemicalBrewing.logger.error("Error transforming potion field, unable to extend potion ID's");
         }
-        try {
-            ReflectionHelper.makeFinalFieldModifiable(Potion.class.getField("jump")).set(null, (new ABPotion(300, false, 7889559)).setPotionName("potion.jump").setIconIndex(2, 1));
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        AlchemicalBrewing.logger.info("Successfully extended potion ID range to: " + Config.maxPotionID);
+        AlchemicalBrewing.logger.info("Successfully extended potion ID range to: " + Potion.potionTypes.length);
     }
 
     private static boolean init = false;

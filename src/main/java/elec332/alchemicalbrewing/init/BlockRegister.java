@@ -1,10 +1,8 @@
 package elec332.alchemicalbrewing.init;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import elec332.alchemicalbrewing.blocks.BlockABBase;
 import elec332.alchemicalbrewing.blocks.BlockChemicalTank;
 import elec332.alchemicalbrewing.tile.TileBrewery;
-import elec332.alchemicalbrewing.tile.TileMundaneTankPart;
 import elec332.alchemicalbrewing.tile.TileTankTap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

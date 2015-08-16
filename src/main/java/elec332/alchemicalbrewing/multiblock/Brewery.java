@@ -1,13 +1,18 @@
 package elec332.alchemicalbrewing.multiblock;
 
 import elec332.alchemicalbrewing.client.gui.BasicGui;
-import elec332.alchemicalbrewing.container.BreweryContainer;
 import elec332.alchemicalbrewing.registry.PotionRegistry;
 import elec332.alchemicalbrewing.registry.WrappedPotion;
 import elec332.core.inventory.BaseContainer;
+import elec332.core.inventory.ContainerMachine;
+import elec332.core.inventory.IHasProgressBar;
+import elec332.core.inventory.ITileWithSlots;
+import elec332.core.inventory.widget.FluidTankWidget;
+import elec332.core.inventory.widget.WidgetProgressArrow;
 import elec332.core.util.BasicInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Slot;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidTank;
@@ -15,7 +20,7 @@ import net.minecraftforge.fluids.FluidTank;
 /**
  * Created by Elec332 on 9-8-2015.
  */
-public class Brewery extends ABMultiBlockBase {
+public class Brewery extends ABMultiBlockBase implements ITileWithSlots, IHasProgressBar {
 
     public Brewery(){
         setInternalTank(new FluidTank(10* FluidContainerRegistry.BUCKET_VOLUME));
@@ -37,12 +42,12 @@ public class Brewery extends ABMultiBlockBase {
      */
     @Override
     public void onTick() {
-        if (progress > 0 && canBrew()){
-            progress--;
+        if (progress < 330 && canBrew()){
+            progress++;
         } else {
             if (canBrew())
                 brewPotion();
-            progress = 330;
+            progress = 0;
         }
     }
 
@@ -67,9 +72,9 @@ public class Brewery extends ABMultiBlockBase {
 
     @Override
     public Object getGui(EntityPlayer player, boolean client) {
-        BaseContainer container = new BreweryContainer(player, this);
+        BaseContainer container = new ContainerMachine(this, player, 0);
         if (client)
-            return new BasicGui(container, "gui_mundane_tank.png");
+            return new BasicGui(container, "brewery.png");
         return container;
     }
 
@@ -84,5 +89,25 @@ public class Brewery extends ABMultiBlockBase {
     @Override
     public void invalidate() {
 
+    }
+
+    @Override
+    public void addSlots(BaseContainer baseContainer) {
+        baseContainer.addSlotToContainer(new Slot(getInventory(), 0, 80, 17));
+        baseContainer.addSlotToContainer(new Slot(getInventory(), 1, 26, 33));
+        baseContainer.addPlayerInventoryToContainer();
+        baseContainer.addWidget(new FluidTankWidget(130, 19, 176, 0, 32, 44, getInternalTank()));
+        baseContainer.addWidget(new FluidTankWidget(14, 19, 176, 0, 32, 44, getInternalTank()));
+        baseContainer.addWidget(new WidgetProgressArrow(76, 42, this, true));
+    }
+
+    @Override
+    public int getProgress() {
+        return progress;
+    }
+
+    @Override
+    public float getProgressScaled(int progress) {
+        return progress/330f;
     }
 }
