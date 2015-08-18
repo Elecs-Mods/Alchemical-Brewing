@@ -26,15 +26,21 @@ public final class PotionRegistry {
         this.registry = Maps.newHashMap();
         this.potionToStack = Maps.newHashMap();
         this.alchemicalBrewingFluids = Lists.newArrayList();
+        this.potionRecipes = Lists.newArrayList();
     }
 
     private List<PotionFluid> alchemicalBrewingFluids;
     private Map<Fluid, ItemStack> registry;
     public Map<WrappedPotion, ItemStack> potionToStack;
+    private List<IPotionRecipe> potionRecipes;
 
     public static final Fluid awkwardFluid = new Fluid("awkwardFluid");
 
     public static final ItemStack awkwardPotion = new ItemStack(Items.potionitem, 1, 16);
+
+    public void registerRecipe(IPotionRecipe potionRecipe){
+        this.potionRecipes.add(potionRecipe);
+    }
 
     public ItemStack fillBottle(FluidTank fluidTank){
         if (fluidTank == null || fluidTank.getFluid() == null || fluidTank.getFluid().getFluid() == null || fluidTank.getFluid().amount < FluidContainerRegistry.BUCKET_VOLUME)
@@ -68,14 +74,21 @@ public final class PotionRegistry {
     }
 
     private PotionFluid processRecipe(Fluid input, BasicInventory inventory, boolean process){
-        if (input == awkwardFluid && inventory.getStackInSlot(0).getItem() == Items.speckled_melon){
+        PotionFluid processed = processRecipe(input, inventory.getStackInSlot(0));
+        if (processed != null){
             if (process)
                 inventory.decrStackSize(0, 1);
-            for (PotionFluid potionFluid : alchemicalBrewingFluids){
-                if (potionFluid.getPotion().getPotion() == Potion.heal && !potionFluid.getPotion().isSplash())
-                    return potionFluid;
+            return processed;
+        }
+        return null;
+    }
+
+    private PotionFluid processRecipe(Fluid input, ItemStack inputStack){
+        if (input != null && inputStack != null && inputStack.getItem() != null && inputStack.stackSize > 0){
+            for (IPotionRecipe potionRecipe : potionRecipes){
+                if (potionRecipe.getFluidInput() == input && inputStack.getItem() == potionRecipe.getIngredient().getItem() && inputStack.stackSize >= potionRecipe.getIngredient().stackSize)
+                    return potionRecipe.getOutPut();
             }
-            throw new RuntimeException();
         }
         return null;
     }
