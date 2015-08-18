@@ -74,20 +74,20 @@ public final class PotionRegistry {
     }
 
     private PotionFluid processRecipe(Fluid input, BasicInventory inventory, boolean process){
-        PotionFluid processed = processRecipe(input, inventory.getStackInSlot(0));
+        IPotionRecipe processed = processRecipe(input, inventory.getStackInSlot(0));
         if (processed != null){
             if (process)
-                inventory.decrStackSize(0, 1);
-            return processed;
+                inventory.decrStackSize(0, processed.getIngredient().stackSize);
+            return processed.getOutPut();
         }
         return null;
     }
 
-    private PotionFluid processRecipe(Fluid input, ItemStack inputStack){
+    private IPotionRecipe processRecipe(Fluid input, ItemStack inputStack){
         if (input != null && inputStack != null && inputStack.getItem() != null && inputStack.stackSize > 0){
             for (IPotionRecipe potionRecipe : potionRecipes){
-                if (potionRecipe.getFluidInput() == input && inputStack.getItem() == potionRecipe.getIngredient().getItem() && inputStack.stackSize >= potionRecipe.getIngredient().stackSize)
-                    return potionRecipe.getOutPut();
+                if (potionRecipe.getFluidInput() == input && inputStack.getItem() == potionRecipe.getIngredient().getItem() && inputStack.getItemDamage() == potionRecipe.getIngredient().getItemDamage() && inputStack.stackSize >= potionRecipe.getIngredient().stackSize)
+                    return potionRecipe;
             }
         }
         return null;
