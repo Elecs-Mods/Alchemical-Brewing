@@ -19,6 +19,9 @@ public class PotionFluid extends Fluid {
         return this.potion;
     }
 
+    public boolean isExplosive(){
+        return this.potion.isSplash();
+    }
     @Override
     public int getColor() {
         return potion.getPotion().getLiquidColor();

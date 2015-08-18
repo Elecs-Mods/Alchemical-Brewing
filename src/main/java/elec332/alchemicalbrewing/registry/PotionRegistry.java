@@ -8,6 +8,7 @@ import elec332.alchemicalbrewing.util.PotionFluid;
 import elec332.core.util.BasicInventory;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.fluids.*;
@@ -71,7 +72,7 @@ public final class PotionRegistry {
             if (process)
                 inventory.decrStackSize(0, 1);
             for (PotionFluid potionFluid : alchemicalBrewingFluids){
-                if (potionFluid.getPotion().getPotion() == Potion.heal)
+                if (potionFluid.getPotion().getPotion() == Potion.heal && !potionFluid.getPotion().isSplash())
                     return potionFluid;
             }
             throw new RuntimeException();
@@ -101,6 +102,22 @@ public final class PotionRegistry {
         for (WrappedPotion potion : potionToStack.keySet()){
             registerFluid(new PotionFluid(potion));
         }
+    }
+
+    public boolean isValidBottleStack(ItemStack stack, FluidStack fluidStack){
+        return isBottle(stack) && fluidStack != null && (fluidStack.getFluid() instanceof PotionFluid) && (((PotionFluid) fluidStack.getFluid()).isExplosive() == isSplashBottle(stack));
+    }
+
+    public ItemStack fillBottle(FluidStack fluidStack){
+        return potionToStack.get(((PotionFluid)fluidStack.getFluid()).getPotion()).copy();
+    }
+
+    public boolean isBottle(ItemStack stack){
+        return stack != null && stack.getItem() == Items.glass_bottle;
+    }
+
+    public boolean isSplashBottle(ItemStack stack){
+        return false;
     }
 
     private ItemStack potionStack(int meta){

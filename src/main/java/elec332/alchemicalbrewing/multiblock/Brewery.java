@@ -11,6 +11,7 @@ import elec332.core.inventory.widget.WidgetProgressArrow;
 import elec332.core.util.BasicInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -34,6 +35,20 @@ public class Brewery extends ABMultiBlockBase implements ITileWithSlots, IHasPro
     @Override
     public void init() {
         this.inventory = new BasicInventory("name", 1, getSaveDelegate());
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tagCompound) {
+        super.writeToNBT(tagCompound);
+        NBTTagCompound tank = new NBTTagCompound();
+        potionTank.writeToNBT(tank);
+        tagCompound.setTag("tank", tank);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tagCompound) {
+        super.readFromNBT(tagCompound);
+        potionTank.readFromNBT(tagCompound.getCompoundTag("tank"));
     }
 
     /**
@@ -68,6 +83,10 @@ public class Brewery extends ABMultiBlockBase implements ITileWithSlots, IHasPro
 
     public BasicInventory getInventory(){
         return inventory;
+    }
+
+    public FluidTank getPotionTank(){
+        return this.potionTank;
     }
 
     @Override

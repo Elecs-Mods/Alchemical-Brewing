@@ -48,6 +48,8 @@ public final class MultiBlocks {
                     public BlockData getBlockAtPos(int length, int width, int height) {
                         if ((length == 1 || length == 2) && width == 1 && height == 1)
                             return new BlockData(Blocks.brewing_stand);
+                        if (length == 3 && width == 0 && height == 0)
+                            return new BlockData(BlockRegister.cannery, OreDictionary.WILDCARD_VALUE);
                         return new BlockData(BlockRegister.breweryBlock, OreDictionary.WILDCARD_VALUE);
                     }
                 });

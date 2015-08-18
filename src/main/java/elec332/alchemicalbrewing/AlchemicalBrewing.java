@@ -37,10 +37,6 @@ import java.io.File;
         acceptedMinecraftVersions = ModInfo.ACCEPTEDMCVERSIONS, useMetadata = true, canBeDeactivated = true)
 public class AlchemicalBrewing {
 
-    public AlchemicalBrewing(){
-        System.out.println(new BlockData(null).equals(new BlockData(null)));
-    }
-
     public static final String ModName = "Alchemical Brewing";
     public static final String ModID = "AlchemicalBrewing";
 
