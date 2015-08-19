@@ -2,9 +2,18 @@ package elec332.alchemicalbrewing.registry;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.gson.JsonArray;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import elec332.alchemicalbrewing.AlchemicalBrewing;
+import elec332.alchemicalbrewing.json.DefaultRecipes;
+import elec332.alchemicalbrewing.json.JsonPotionRecipe;
+import elec332.alchemicalbrewing.json.Serializers;
 import elec332.alchemicalbrewing.util.PotionFluid;
+import elec332.core.helper.FileHelper;
+import elec332.core.json.ExtraTypeAdapters;
+import elec332.core.json.JsonHandler;
+import elec332.core.main.ElecCore;
 import elec332.core.util.BasicInventory;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Items;
@@ -13,6 +22,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.fluids.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -25,11 +37,12 @@ public final class PotionRegistry {
     private PotionRegistry(){
         this.registry = Maps.newHashMap();
         this.potionToStack = Maps.newHashMap();
-        this.alchemicalBrewingFluids = Lists.newArrayList();
+        this.alchemicalBrewingFluids = Maps.newHashMap();
         this.potionRecipes = Lists.newArrayList();
+        ExtraTypeAdapters.allFactories.add(Serializers.wrappedPotion);
     }
 
-    private List<PotionFluid> alchemicalBrewingFluids;
+    private Map<WrappedPotion, PotionFluid> alchemicalBrewingFluids;
     private Map<Fluid, ItemStack> registry;
     public Map<WrappedPotion, ItemStack> potionToStack;
     private List<IPotionRecipe> potionRecipes;
@@ -97,9 +110,10 @@ public final class PotionRegistry {
         FluidRegistry.registerFluid(awkwardFluid);
     }
 
-    private void registerFluid(PotionFluid fluid){
+    private void registerFluid(WrappedPotion potion){
+        PotionFluid fluid = new PotionFluid(potion);
         FluidRegistry.registerFluid(fluid);
-        alchemicalBrewingFluids.add(fluid);
+        alchemicalBrewingFluids.put(potion, fluid);
     }
 
     public void init(){
@@ -113,7 +127,26 @@ public final class PotionRegistry {
         potionToStack.put(new WrappedPotion(Potion.harm, 1, true), potionStack(16396));
         potionToStack.put(new WrappedPotion(Potion.harm, 2, true), potionStack(16428));
         for (WrappedPotion potion : potionToStack.keySet()){
-            registerFluid(new PotionFluid(potion));
+            registerFluid(potion);
+        }
+        File file = new File(AlchemicalBrewing.configFolder, "recipes.json");
+        if (!file.exists()){
+            try {
+                if (!file.getParentFile().mkdirs() && !file.createNewFile())
+                    throw new IOException();
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+            JsonArray array = JsonHandler.newJsonArray();
+            for (JsonPotionRecipe recipe : DefaultRecipes.recipes)
+                array.add(JsonHandler.toJsonElement(recipe, JsonPotionRecipe.class));
+            JsonHandler.toFile(file, JsonHandler.newJsonEntry("recipes", array));
+        }
+        try {
+            List<JsonPotionRecipe> recipes= JsonHandler.getDataAsList(JsonHandler.getMainFileObject(file), "recipes", JsonPotionRecipe.class);
+            potionRecipes.addAll(recipes);
+        } catch (FileNotFoundException e){
+            AlchemicalBrewing.logger.error("Error reading Json file: ", e);
         }
     }
 
@@ -133,15 +166,43 @@ public final class PotionRegistry {
         return false;
     }
 
+    public boolean isPotion(ItemStack stack){
+        return stack != null && stack.getItem() == Items.potionitem;
+    }
+
+    public Fluid getFluid(ItemStack stack){
+        if (!isPotion(stack))
+            return null;
+        if (ItemStack.areItemStacksEqual(stack, awkwardPotion))
+            return awkwardFluid;
+        for (Map.Entry<WrappedPotion, ItemStack> entry : potionToStack.entrySet()){
+            if (entry.getValue().getItem() == stack.getItem() && stack.getItemDamage() == entry.getValue().getItemDamage())
+                return alchemicalBrewingFluids.get(entry.getKey());
+        }
+        return null;
+    }
+
     private ItemStack potionStack(int meta){
         return new ItemStack(Items.potionitem, 1, meta);
     }
 
+    public PotionFluid getFluid(WrappedPotion potion){
+        return alchemicalBrewingFluids.get(potion);
+    }
+
     @SideOnly(Side.CLIENT)
     public void registerTextures(IIconRegister iIconRegister){
-        for (Fluid fluid : alchemicalBrewingFluids)
+        for (Fluid fluid : alchemicalBrewingFluids.values())
             fluid.setStillIcon(FluidRegistry.WATER.getStillIcon());
         awkwardFluid.setStillIcon(FluidRegistry.WATER.getStillIcon());
+    }
+
+    public static Potion getPotionByName(String name){
+        for (Potion potion : Potion.potionTypes){
+            if (potion != null && potion.getName().equals(name))
+                return potion;
+        }
+        return null;
     }
 
 }

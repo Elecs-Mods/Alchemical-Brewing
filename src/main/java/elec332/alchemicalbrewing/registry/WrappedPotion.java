@@ -11,8 +11,19 @@ public final class WrappedPotion {
         this.potion = potion;
         this.strength = strength;
         this.splash = splash;
+        this.name = null;
     }
 
+    public WrappedPotion(String potion, int strength, boolean splash){
+        if (com.google.common.base.Strings.isNullOrEmpty(potion))
+            throw new IllegalArgumentException();
+        this.potion = PotionRegistry.getPotionByName(potion);
+        this.strength = strength;
+        this.splash = splash;
+        this.name = potion;
+    }
+
+    private final String name;
     private final Potion potion;
     private final int strength;
     private final boolean splash;
@@ -27,6 +38,14 @@ public final class WrappedPotion {
 
     public boolean isSplash() {
         return splash;
+    }
+
+    public String getName(){
+        return com.google.common.base.Strings.isNullOrEmpty(name) ? potion.getName() : name;
+    }
+
+    public final boolean isAwkwardPotion(){
+        return name != null && name.equalsIgnoreCase("awkwardPotion");
     }
 
     @Override

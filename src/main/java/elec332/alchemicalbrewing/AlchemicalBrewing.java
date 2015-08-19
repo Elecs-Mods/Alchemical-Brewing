@@ -54,10 +54,10 @@ public class AlchemicalBrewing {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        config = new Configuration(FileHelper.getConfigFileElec(event));
+        configFolder = FileHelper.getElecConfigFolder(event);
+        config = new Configuration(configFolder, ModID+".cfg");
         configWrapper = new ConfigWrapper(config);
         config.load();
-        configFolder = FileHelper.getElecConfigFolder(event);
         logger = event.getModLog();
         configWrapper.registerConfig(new Config());
         creativeTab = new CreativeTabs(ModID) {
