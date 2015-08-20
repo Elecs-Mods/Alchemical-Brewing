@@ -1,16 +1,15 @@
 package elec332.alchemicalbrewing.blocks;
 
-import elec332.alchemicalbrewing.tile.TileMundaneTankPart;
-import elec332.core.baseclasses.tileentity.BlockTileBase;
+import elec332.alchemicalbrewing.tile.TileBrewery;
 import net.minecraft.block.material.Material;
 
 /**
- * Created by Elec332 on 29-7-2015.
+ * Created by Elec332 on 20-8-2015.
  */
-public class BlockChemicalTank extends BlockABBase {
+public class BlockBrewery extends BlockABBase {
 
-    public BlockChemicalTank(Material mat, String blockName) {
-        super(mat, TileMundaneTankPart.class, blockName);
+    public BlockBrewery(String blockName) {
+        super(Material.wood, TileBrewery.class, blockName);
     }
 
     @Override
